@@ -1,0 +1,24 @@
+@import url('https://fonts.cdnfonts.com/css/arista-pro-alternate');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+body {
+  background-image: url("./assets/bg-gradient.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: left top;
+  font-family: 'Arista Pro Alternate','Segoe UI', Tahoma, Verdana, sans-serif;
+}
+
+.drop-zone {
+  border-width: 1px;
+  border-color: #ffffff;
+  border-radius: 20px;
+  transition: border 0.3s ease-in-out;
+}
+.drop-zone.dragged {
+  border-color: #438ef7;
+}
