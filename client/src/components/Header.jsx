@@ -2,7 +2,7 @@ import React from "react";
 
 const Header = () => {
   return (
-    <div className="container mx-auto max-w-screen-lg flex justify-between items-center pt-6">
+    <div className="container mx-auto max-w-screen-lg flex justify-between items-center pt-6 px-4">
       <nav className="flex gap-4">
         <a href="/" className="text-xl font-semibold">
           Home

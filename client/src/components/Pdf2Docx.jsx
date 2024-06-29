@@ -1,11 +1,13 @@
-import React, { useState } from "react";
-import icon from "../assets/down-arrow-svgrepo-com.svg";
+import React, { useEffect, useState } from "react";
 import { HiMiniArrowLongDown } from "react-icons/hi2";
+import axios from "axios";
 
 const Pdf2Docx = () => {
   const [file, setFile] = useState(null);
   const [dragging, setDragging] = useState(false);
   const [error, setError] = useState("");
+  const [uploading, setUploading] = useState(false);
+  
 
   const handleDrop = (e) => {
     e.preventDefault();
@@ -32,6 +34,34 @@ const Pdf2Docx = () => {
     setDragging(false);
   };
 
+  const handleFileUpload = async () => {
+    setUploading(true);
+
+    if (!file) {
+      setError("Please drop a file to upload");
+      setUploading(false)
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      console.log('Target file:', formData);
+
+      const response = await axios.post('/api/pdf2docx/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
+      console.log(response.data); // Assuming the response is a success message
+    } catch (error) {
+      console.error('Error uploading file:', error);
+    }
+    setUploading(false);
+  };
+
   return (
     <div className="container mx-auto flex flex-col justify-center items-center max-w-screen-md">
       <div className="flex flex-col gap-8">
@@ -46,11 +76,11 @@ const Pdf2Docx = () => {
           onDragOver={handleDragOver}
           onDragEnter={handleDragEnter}
           onDragLeave={handleDragLeave}
+          onClick={handleFileUpload}
           className={`flex flex-col items-center gap-4 p-4 px-10 max-w-md border border-white border-opacity-80 bg-white ${
             dragging || file ? "bg-opacity-95" : "bg-opacity-20"
           } backdrop-blur-sm rounded-lg shadow-xl`}
         >
-          {/* <img className="h-16 w-16" src={icon} alt="" /> */}
           <HiMiniArrowLongDown size={50} />
           {file ? (
             <p>Selected File: {file.name}</p>
@@ -58,6 +88,7 @@ const Pdf2Docx = () => {
             <span>Drop your file here</span>
           )}
           {error && <p className="text-red-400">{error}</p>}
+          {uploading && <p>Uploading...</p>}
         </div>
       </div>
     </div>
